@@ -138,8 +138,8 @@ function WarmScan({ onNav }) {
 
   const steps = [
     { l: 'Scan', active: true },
-    { l: 'Playground' },
     { l: 'Revisione' },
+    { l: 'Playground' },
     { l: 'Anteprima' },
     { l: 'Pubblica' },
   ];

@@ -53,7 +53,7 @@ function WarmBeforeAfter({ onNav }) {
 
       {/* Top bar — context + actions */}
       <div style={{ display: 'flex', alignItems: 'center', padding: '16px 32px', borderBottom: '1.5px dashed rgba(58,31,16,0.2)', position: 'relative', zIndex: 1, background: '#f4ead8' }}>
-        <button onClick={() => onNav && onNav('playground')} style={{ width: 36, height: 36, borderRadius: '50%', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.2)', color: '#3a1f10', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
+        <button onClick={() => onNav && onNav('scan')} style={{ width: 36, height: 36, borderRadius: '50%', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.2)', color: '#3a1f10', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
         <div style={{ marginLeft: 16 }}>
           <div style={{ fontSize: 11, letterSpacing: 1.5, color: '#8a4a1a', textTransform: 'uppercase' }}>Bar Basso · Milano</div>
           <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 22, fontWeight: 500, lineHeight: 1.1, letterSpacing: -0.3 }}>Confronto menu <span style={{ fontStyle: 'italic', color: '#8a4a1a', fontSize: 18 }}>· revisione AI</span></div>

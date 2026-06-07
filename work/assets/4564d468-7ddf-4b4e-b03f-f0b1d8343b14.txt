@@ -60,7 +60,7 @@ function WarmPlayground({ onNav }) {
 
       {/* Top bar */}
       <div style={{ display: 'flex', alignItems: 'center', padding: '14px 28px', borderBottom: '1.5px dashed rgba(58,31,16,0.2)', position: 'relative', zIndex: 1, background: '#f4ead8', gap: 16 }}>
-        <button onClick={() => onNav && onNav('scan')} style={{ width: 32, height: 32, borderRadius: '50%', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.2)', color: '#3a1f10', fontSize: 14, cursor: 'pointer' }}>←</button>
+        <button onClick={() => onNav && onNav('before-after')} style={{ width: 32, height: 32, borderRadius: '50%', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.2)', color: '#3a1f10', fontSize: 14, cursor: 'pointer' }}>←</button>
         <div>
           <div style={{ fontSize: 10, letterSpacing: 1.5, color: '#8a4a1a', textTransform: 'uppercase' }}>Bar Basso · Milano</div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
@@ -72,8 +72,8 @@ function WarmPlayground({ onNav }) {
         <div style={{ marginLeft: 28, display: 'flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
           {[
             { l: 'Scan', done: true },
+            { l: 'Revisione', done: true },
             { l: 'Playground', active: true },
-            { l: 'Revisione', done: false },
             { l: 'Anteprima', done: false },
             { l: 'Pubblica', done: false },
           ].map((s, i, arr) => (
@@ -86,8 +86,8 @@ function WarmPlayground({ onNav }) {
           ))}
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
-          <button onClick={() => onNav && onNav('final')} style={{ padding: '8px 14px', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.25)', borderRadius: 20, color: '#3a1f10', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>Anteprima</button>
-          <button onClick={() => onNav && onNav('before-after')} style={{ padding: '8px 18px', background: '#c1272d', border: 'none', borderRadius: 20, color: '#f4ead8', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600 }}>Vedi confronto →</button>
+          <button onClick={() => onNav && onNav('before-after')} style={{ padding: '8px 14px', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.25)', borderRadius: 20, color: '#3a1f10', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>← Confronto</button>
+          <button onClick={() => onNav && onNav('final')} style={{ padding: '8px 18px', background: '#c1272d', border: 'none', borderRadius: 20, color: '#f4ead8', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600 }}>Pubblica menu →</button>
         </div>
       </div>
 
