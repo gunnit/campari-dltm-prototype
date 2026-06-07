@@ -64,8 +64,8 @@ function WarmDashboard({ onNav }) {
           <div style={{ marginTop: 10 }}><Squiggle color="#e8a33a" w={140} /></div>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <button style={{ padding: '12px 20px', background: 'transparent', border: '1.5px solid #3a1f10', borderRadius: 26, color: '#3a1f10', fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>Scansiona menu</button>
-          <button onClick={() => onNav && onNav('playground')} style={{ padding: '12px 22px', background: '#c1272d', border: '1.5px solid #c1272d', borderRadius: 26, color: '#f4ead8', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button onClick={() => onNav && onNav('scan')} style={{ padding: '12px 20px', background: 'transparent', border: '1.5px solid #3a1f10', borderRadius: 26, color: '#3a1f10', fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>Scansiona menu</button>
+          <button onClick={() => onNav && onNav('scan')} style={{ padding: '12px 22px', background: '#c1272d', border: '1.5px solid #c1272d', borderRadius: 26, color: '#f4ead8', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: 15 }}>+</span>
             Crea nuovo menu
           </button>
@@ -104,7 +104,7 @@ function WarmDashboard({ onNav }) {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, flex: 1, minHeight: 0 }}>
           {pdvs.map((p, i) => (
-            <div key={i} onClick={() => onNav && onNav('playground')} style={{ background: '#fff8eb', borderRadius: 22, padding: 18, display: 'flex', flexDirection: 'column', gap: 10, boxShadow: '0 1px 0 rgba(58,31,16,0.06), 0 4px 16px rgba(58,31,16,0.05)', position: 'relative', cursor: 'pointer', border: '1px solid rgba(58,31,16,0.08)', transition: 'transform .15s, box-shadow .15s' }}
+            <div key={i} onClick={() => onNav && onNav('scan')} style={{ background: '#fff8eb', borderRadius: 22, padding: 18, display: 'flex', flexDirection: 'column', gap: 10, boxShadow: '0 1px 0 rgba(58,31,16,0.06), 0 4px 16px rgba(58,31,16,0.05)', position: 'relative', cursor: 'pointer', border: '1px solid rgba(58,31,16,0.08)', transition: 'transform .15s, box-shadow .15s' }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 1px 0 rgba(58,31,16,0.06), 0 8px 22px rgba(58,31,16,0.1)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 1px 0 rgba(58,31,16,0.06), 0 4px 16px rgba(58,31,16,0.05)'; }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

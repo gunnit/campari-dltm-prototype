@@ -723,13 +723,16 @@
 <script type="text/babel" src="0183ed60-c5ce-4543-93b2-ef6ac5bd0f4b"></script>
 <script type="text/babel" src="4564d468-7ddf-4b4e-b03f-f0b1d8343b14"></script>
 <script type="text/babel" src="fb931047-a53b-409d-bc36-f08e849ae530"></script>
+<script type="text/babel" src="7c4e9b21-3a8d-4f60-b2e5-9d1c0a6f8e4b"></script>
 <script type="text/babel">
   const W = 1366, H = 1024;
 
-  // Flow order per Listen/Davide (3 giu 2026): Playground (drag-and-drop
-  // editing) now precedes Confronto, matching the real working sequence.
+  // Flow order per Listen/Davide: Scansione (capture + digitalise the paper
+  // menu) is the origin step, then Playground (drag-and-drop editing) precedes
+  // Confronto — the real working sequence.
   const SCREENS = [
     { id: 'dashboard',     label: 'Dashboard',      Comp: window.WarmDashboard },
+    { id: 'scan',          label: 'Scansione',      Comp: window.WarmScan },
     { id: 'playground',    label: 'Playground',     Comp: window.WarmPlayground },
     { id: 'before-after',  label: 'Confronto',      Comp: window.WarmBeforeAfter },
     { id: 'final',         label: 'Anteprima',      Comp: window.WarmFinalMenu },

@@ -76,11 +76,20 @@ function encode() {
   // needless re-gzip churn. SRI is stripped at runtime, so re-gzipping an
   // edited asset is safe.
   const assetsDir = path.join(WORK, 'assets');
-  let changed = 0;
+  let changed = 0, added = 0;
   for (const f of fs.readdirSync(assetsDir)) {
     const uuid = f.replace(/\.txt$/, '');
-    if (!manifest[uuid]) { console.warn('skip unknown asset', uuid); continue; }
     const fileBytes = fs.readFileSync(path.join(assetsDir, f));
+    if (!manifest[uuid]) {
+      // Brand-new asset (e.g. an added screen component). Stored gzip-compressed
+      // as application/javascript — the template must also reference this uuid in
+      // a <script type="text/babel" src="<uuid>"> tag (the loader swaps it for a
+      // blob URL).
+      manifest[uuid] = { mime: 'application/javascript', compressed: true, data: zlib.gzipSync(fileBytes).toString('base64') };
+      added++;
+      console.log('  + added asset', uuid, `(${fileBytes.length}b)`);
+      continue;
+    }
     let orig = Buffer.from(manifest[uuid].data, 'base64');
     if (manifest[uuid].compressed) orig = zlib.gunzipSync(orig);
     if (orig.equals(fileBytes)) continue; // unchanged — leave original base64 intact
@@ -106,7 +115,7 @@ function encode() {
   replaceTag(TAGS.template, safeStringify(templateStr));
 
   fs.writeFileSync(INDEX, out);
-  console.log(`Rebuilt ${INDEX} (${out.length} bytes, ${changed} asset(s) changed)`);
+  console.log(`Rebuilt ${INDEX} (${out.length} bytes, ${changed} changed, ${added} added)`);
 }
 
 const cmd = process.argv[2];

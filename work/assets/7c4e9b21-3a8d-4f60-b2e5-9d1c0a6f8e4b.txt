@@ -1,0 +1,216 @@
+// Warm Italian — Screen: Acquisizione / digitalizzazione del menu cartaceo.
+// Sits between Dashboard and Playground: scatta o importa la foto del menu del
+// locale, lo digitalizza (OCR) e prosegue verso Playground o Confronto.
+// Added per Listen/Davide follow-up: the scan step is the origin of the menu.
+
+function WarmScan({ onNav }) {
+  const GROUP = '#16357a'; // Campari Group corporate blue (vs product red #c1272d)
+  const [phase, setPhase] = React.useState('capture'); // 'capture' | 'scanning' | 'done'
+
+  // Same source data the Confronto screen shows as "Prima" — keeps the story continuous.
+  const detected = [
+    { name: "Mojito", price: "9" },
+    { name: "Gin Tonic", price: "8" },
+    { name: "Moscow Mule", price: "9" },
+    { name: "Margarita", price: "9" },
+    { name: "Old Fashioned", price: "11" },
+    { name: "Manhattan", price: "10" },
+    { name: "Cosmopolitan", price: "9" },
+    { name: "Whisky Sour", price: "10" },
+    { name: "Espresso Martini", price: "10" },
+    { name: "Caipirinha", price: "9" },
+    { name: "Bloody Mary", price: "9" },
+    { name: "Negroni Sbagliato", price: "10", note: "★ specialità" },
+  ];
+
+  React.useEffect(() => {
+    if (phase !== 'scanning') return;
+    const t = setTimeout(() => setPhase('done'), 1500);
+    return () => clearTimeout(t);
+  }, [phase]);
+
+  const Brackets = () => (
+    <>
+      <div style={{ position: 'absolute', top: 14, left: 14, width: 20, height: 20, borderTop: '2px solid rgba(244,234,216,0.85)', borderLeft: '2px solid rgba(244,234,216,0.85)' }} />
+      <div style={{ position: 'absolute', top: 14, right: 14, width: 20, height: 20, borderTop: '2px solid rgba(244,234,216,0.85)', borderRight: '2px solid rgba(244,234,216,0.85)' }} />
+      <div style={{ position: 'absolute', bottom: 14, left: 14, width: 20, height: 20, borderBottom: '2px solid rgba(244,234,216,0.85)', borderLeft: '2px solid rgba(244,234,216,0.85)' }} />
+      <div style={{ position: 'absolute', bottom: 14, right: 14, width: 20, height: 20, borderBottom: '2px solid rgba(244,234,216,0.85)', borderRight: '2px solid rgba(244,234,216,0.85)' }} />
+    </>
+  );
+
+  // The photographed paper menu (placeholder for the locale's real photo).
+  const PaperPhoto = ({ scanning }) => (
+    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at 50% 32%, #3a2517, #160d07)', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(125deg, rgba(255,255,255,0.07) 0%, transparent 32%)', pointerEvents: 'none' }} />
+      <div style={{ width: '72%', maxWidth: 320, background: '#faf3e3', borderRadius: 3, padding: '22px 28px', transform: 'rotate(-1.4deg)', boxShadow: '0 18px 44px rgba(0,0,0,0.5)', position: 'relative' }}>
+        <div style={{ textAlign: 'center', marginBottom: 12 }}>
+          <div style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 18, fontWeight: 700, letterSpacing: 2, color: '#3a1f10' }}>BAR BASSO</div>
+          <div style={{ fontSize: 8.5, color: '#8a4a1a', letterSpacing: 3, marginTop: 2 }}>— LISTINO COCKTAILS —</div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+          {detected.map((d, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 6, fontFamily: 'Georgia, serif', fontSize: 11.5, color: '#3a1f10', opacity: d.note ? 1 : 0.85 }}>
+              <span style={{ fontWeight: d.note ? 600 : 400 }}>{d.name}</span>
+              {d.note && <span style={{ fontSize: 8.5, color: '#8a4a1a', fontStyle: 'italic' }}>{d.note}</span>}
+              <span style={{ flex: 1, borderBottom: '1px dotted rgba(58,31,16,0.3)', transform: 'translateY(-3px)' }} />
+              <span style={{ fontVariantNumeric: 'tabular-nums' }}>€ {d.price}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid rgba(58,31,16,0.15)', fontSize: 8, color: '#8a4a1a', textAlign: 'center', fontStyle: 'italic' }}>Via Plinio 39, Milano · 1947</div>
+      </div>
+      {scanning && <div style={{ position: 'absolute', left: '6%', right: '6%', height: 3, background: 'linear-gradient(90deg, transparent, #e8a33a, transparent)', boxShadow: '0 0 16px 5px rgba(232,163,58,0.55)', animation: 'wsSweep 1.4s ease-in-out infinite' }} />}
+      <Brackets />
+    </div>
+  );
+
+  const Capture = () => (
+    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: 'radial-gradient(circle at 50% 40%, #2a1c12, #160d07)', color: '#f4ead8' }}>
+      <div style={{ width: 66, height: 66, borderRadius: '50%', border: '2px dashed rgba(244,234,216,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>📷</div>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 21, fontStyle: 'italic', fontWeight: 500 }}>Inquadra il menu del locale</div>
+        <div style={{ fontSize: 12.5, opacity: 0.7, marginTop: 5 }}>scatta una foto del menu cartaceo, oppure importa un file</div>
+      </div>
+      <div style={{ display: 'flex', gap: 10, marginTop: 6 }}>
+        <button onClick={() => setPhase('scanning')} style={{ padding: '11px 20px', background: '#c1272d', border: 'none', borderRadius: 24, color: '#f4ead8', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: '"DM Sans", sans-serif', display: 'flex', alignItems: 'center', gap: 8 }}>📸 Scatta foto</button>
+        <button onClick={() => setPhase('scanning')} style={{ padding: '11px 18px', background: 'transparent', border: '1.5px solid rgba(244,234,216,0.4)', borderRadius: 24, color: '#f4ead8', fontSize: 13, cursor: 'pointer', fontFamily: '"DM Sans", sans-serif' }}>Importa PDF / JPG</button>
+      </div>
+      <div style={{ fontFamily: '"Caveat", cursive', fontSize: 16, color: 'rgba(244,234,216,0.55)', marginTop: 2 }}>— l'AI lo digitalizza in pochi secondi —</div>
+      <Brackets />
+    </div>
+  );
+
+  // RIGHT — digitized result, per phase
+  const Digitized = () => {
+    if (phase === 'capture') {
+      return (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, border: '1.5px dashed rgba(58,31,16,0.22)', borderRadius: 14, color: '#8a4a1a', textAlign: 'center', padding: 24 }}>
+          <div style={{ fontSize: 30, opacity: 0.4 }}>⤓</div>
+          <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 16, color: '#5c2818' }}>In attesa di acquisizione</div>
+          <div style={{ fontSize: 12 }}>Il menu digitalizzato apparirà qui.</div>
+        </div>
+      );
+    }
+    if (phase === 'scanning') {
+      return (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, border: '1px solid rgba(58,31,16,0.12)', borderRadius: 14, background: '#fff8eb', padding: 18 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+            <div style={{ width: 16, height: 16, border: '2px solid rgba(193,39,45,0.25)', borderTopColor: '#c1272d', borderRadius: '50%', animation: 'wsSpin 0.7s linear infinite' }} />
+            <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 16, fontWeight: 600, color: '#c1272d' }}>Digitalizzazione in corso…</div>
+          </div>
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+              <div style={{ height: 9, width: `${45 + ((i * 13) % 40)}%`, background: 'rgba(58,31,16,0.1)', borderRadius: 4 }} />
+              <div style={{ flex: 1 }} />
+              <div style={{ height: 9, width: 26, background: 'rgba(193,39,45,0.12)', borderRadius: 4 }} />
+            </div>
+          ))}
+        </div>
+      );
+    }
+    // done
+    return (
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, border: '1px solid rgba(58,31,16,0.12)', borderRadius: 14, background: '#fff8eb', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', borderBottom: '1px dashed rgba(58,31,16,0.15)' }}>
+          <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 17, fontWeight: 600, color: '#3a1f10' }}>Menu digitalizzato</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', background: 'rgba(34,150,90,0.1)', border: '1px solid rgba(34,150,90,0.25)', borderRadius: 16, fontSize: 11, color: '#22965a' }}>
+            <span>✓</span><span>OCR 96%</span>
+          </div>
+        </div>
+        <div style={{ flex: 1, overflow: 'hidden', padding: '12px 18px', display: 'flex', flexDirection: 'column', gap: 5 }}>
+          {detected.map((d, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 8px', borderRadius: 8, background: d.note ? 'rgba(232,163,58,0.14)' : 'transparent' }}>
+              <span style={{ color: '#22965a', fontSize: 11 }}>✓</span>
+              <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: 12.5, fontWeight: 500, color: '#3a1f10' }}>{d.name}</span>
+              {d.note && <span style={{ fontSize: 8.5, color: '#8a4a1a', background: '#e8a33a', padding: '1px 6px', borderRadius: 8, textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>specialità</span>}
+              <span style={{ flex: 1, borderBottom: '1px dotted rgba(58,31,16,0.2)', transform: 'translateY(-2px)' }} />
+              <span style={{ fontFamily: '"Playfair Display", serif', fontSize: 13, color: '#8a4a1a', fontVariantNumeric: 'tabular-nums' }}>€ {d.price}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ padding: '10px 18px', borderTop: '1px dashed rgba(58,31,16,0.15)', display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#8a4a1a' }}>
+          <span>12 drink rilevati · 1 specialità</span>
+          <span style={{ fontFamily: '"Caveat", cursive', fontSize: 14, color: '#c1272d' }}>pronto per l'AI ✨</span>
+        </div>
+      </div>
+    );
+  };
+
+  const steps = [
+    { l: 'Scan', active: true },
+    { l: 'Playground' },
+    { l: 'Revisione' },
+    { l: 'Anteprima' },
+    { l: 'Pubblica' },
+  ];
+
+  return (
+    <div style={{ width: '100%', height: '100%', background: '#f4ead8', fontFamily: '"DM Sans", "Inter", sans-serif', color: '#3a1f10', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+      <style>{`@keyframes wsSweep { 0%{top:6%} 50%{top:88%} 100%{top:6%} } @keyframes wsSpin { to { transform: rotate(360deg) } }`}</style>
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(193,39,45,0.04) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(232,163,58,0.06) 0%, transparent 40%)', pointerEvents: 'none' }} />
+
+      {/* Top bar */}
+      <div style={{ display: 'flex', alignItems: 'center', padding: '14px 32px', borderBottom: '1.5px dashed rgba(58,31,16,0.2)', position: 'relative', zIndex: 1, background: '#f4ead8', gap: 16 }}>
+        <button onClick={() => onNav && onNav('dashboard')} style={{ width: 32, height: 32, borderRadius: '50%', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.2)', color: '#3a1f10', fontSize: 14, cursor: 'pointer' }}>←</button>
+        <div>
+          <div style={{ fontSize: 10, letterSpacing: 1.5, color: '#8a4a1a', textTransform: 'uppercase' }}>Bar Basso · Milano</div>
+          <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 20, fontWeight: 500, letterSpacing: -0.3 }}>Acquisisci il menu</div>
+        </div>
+        <div style={{ marginLeft: 28, display: 'flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
+          {steps.map((s, i, arr) => (
+            <React.Fragment key={i}>
+              <div style={{ padding: '4px 10px', borderRadius: 12, background: s.active ? '#3a1f10' : 'transparent', color: s.active ? '#f4ead8' : '#8a4a1a', fontWeight: s.active ? 600 : 400, border: s.active ? 'none' : '1px dashed rgba(58,31,16,0.2)' }}>{s.l}</div>
+              {i < arr.length - 1 && <div style={{ width: 14, borderTop: '1px dotted rgba(58,31,16,0.3)' }} />}
+            </React.Fragment>
+          ))}
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', background: phase === 'done' ? 'rgba(34,150,90,0.1)' : 'rgba(193,39,45,0.08)', border: `1px solid ${phase === 'done' ? 'rgba(34,150,90,0.25)' : 'rgba(193,39,45,0.2)'}`, borderRadius: 20, fontSize: 11, color: phase === 'done' ? '#22965a' : '#c1272d' }}>
+          <span style={{ width: 7, height: 7, borderRadius: '50%', background: phase === 'done' ? '#22965a' : '#c1272d' }} />
+          <span style={{ fontFamily: '"Caveat", cursive', fontSize: 15 }}>{phase === 'capture' ? 'in attesa di scansione' : phase === 'scanning' ? 'digitalizzazione…' : 'menu digitalizzato'}</span>
+        </div>
+      </div>
+
+      {/* Body — two panels */}
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, padding: '22px 32px 0', minHeight: 0, position: 'relative', zIndex: 1 }}>
+        {/* LEFT — capture / photo */}
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ fontSize: 10, letterSpacing: 2, color: '#8a4a1a', textTransform: 'uppercase', fontWeight: 600 }}>Menu cartaceo</div>
+            <div style={{ fontFamily: '"Caveat", cursive', fontSize: 16, color: '#8a4a1a' }}>— la foto del locale</div>
+          </div>
+          <div style={{ flex: 1, position: 'relative', borderRadius: 16, overflow: 'hidden', boxShadow: '0 6px 22px rgba(58,31,16,0.18)', minHeight: 0 }}>
+            {phase === 'capture' ? <Capture /> : <PaperPhoto scanning={phase === 'scanning'} />}
+          </div>
+        </div>
+
+        {/* RIGHT — digitized */}
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ fontSize: 10, letterSpacing: 2, color: '#c1272d', textTransform: 'uppercase', fontWeight: 700 }}>Digitalizzato</div>
+            <div style={{ fontFamily: '"Caveat", cursive', fontSize: 16, color: '#c1272d' }}>— pronto da arricchire</div>
+          </div>
+          <Digitized />
+        </div>
+      </div>
+
+      {/* Bottom — actions */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px 22px', position: 'relative', zIndex: 1, gap: 16 }}>
+        {phase === 'done' ? (
+          <>
+            <button onClick={() => setPhase('capture')} style={{ padding: '10px 16px', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.25)', borderRadius: 22, color: '#3a1f10', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>↺ Riscansiona</button>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => onNav && onNav('playground')} style={{ padding: '11px 18px', background: '#3a1f10', border: 'none', borderRadius: 22, color: '#f4ead8', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500 }}>Modifica nel Playground →</button>
+              <button onClick={() => onNav && onNav('before-after')} style={{ padding: '11px 22px', background: '#c1272d', border: 'none', borderRadius: 22, color: '#f4ead8', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}><span>✦</span> Vedi confronto AI →</button>
+            </div>
+          </>
+        ) : (
+          <div style={{ marginLeft: 'auto', fontFamily: '"Caveat", cursive', fontSize: 17, color: '#8a4a1a' }}>
+            {phase === 'capture' ? 'acquisisci il menu per continuare →' : 'attendi la digitalizzazione →'}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+window.WarmScan = WarmScan;
