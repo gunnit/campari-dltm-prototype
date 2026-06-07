@@ -1,0 +1,243 @@
+// Warm Italian — Screen 04: Final menu + publish
+
+function WarmFinalMenu({ onNav }) {
+  const classics = [
+    { n: "Negroni", p: "12", ing: "Campari · Gin · Vermouth Rosso", note: "il classico aperitivo italiano" },
+    { n: "Americano", p: "11", ing: "Campari · Vermouth Rosso · Soda", note: "il padre del Negroni · 1860" },
+    { n: "Spritz Campari", p: "10", ing: "Campari · Prosecco · Soda", note: "il sole d'estate in un bicchiere" },
+    { n: "Garibaldi", p: "11", ing: "Campari · Succo d'arancia spremuto", note: "fluffy · da brunch" },
+    { n: "Boulevardier", p: "13", ing: "Campari · Whisky · Vermouth Rosso", note: "Negroni d'inverno" },
+    { n: "Negroni Sbagliato", p: "11", ing: "Campari · Vermouth · Spumante", note: "★ creato qui al Bar Basso, 1972", signature: true },
+  ];
+
+  const bar = [
+    ["Mojito", "9"], ["Gin Tonic", "8"], ["Moscow Mule", "9"], ["Margarita", "9"],
+    ["Old Fashioned", "11"], ["Manhattan", "10"], ["Espresso Martini", "10"],
+  ];
+
+  // Campari GROUP = corporate blue + Inter (vs aperitivo PRODUCT red) — Listen 3 giu
+  const GROUP = '#16357a';
+
+  // Venue interior "photo" placeholder (drop in the locale's real photo here).
+  const VenuePhoto = () => {
+    const uid = React.useId().replace(/:/g, '');
+    const cols = ['#c1272d', '#e8a33a', '#7a0e14', '#d4b896', '#8a6a3a', '#a8331f'];
+    return (
+      <svg viewBox="0 0 320 120" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style={{ display: 'block' }} aria-label="Interni del locale">
+        <defs>
+          <linearGradient id={`w-${uid}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3a1f12" /><stop offset="1" stopColor="#190d07" /></linearGradient>
+          <radialGradient id={`g-${uid}`} cx="0.5" cy="0.18" r="0.85"><stop offset="0" stopColor="#e8a33a" stopOpacity="0.5" /><stop offset="1" stopColor="#e8a33a" stopOpacity="0" /></radialGradient>
+        </defs>
+        <rect width="320" height="120" fill={`url(#w-${uid})`} />
+        <rect width="320" height="120" fill={`url(#g-${uid})`} />
+        {[34, 56, 78].map((y, r) => (
+          <g key={r}>
+            <rect x="24" y={y - 14} width="272" height="14" fill="#2a160c" opacity="0.5" />
+            <rect x="24" y={y} width="272" height="2" fill="#5c2818" />
+            {Array.from({ length: 16 }).map((_, i) => {
+              const h = 8 + ((i * 7 + r * 5) % 6);
+              return <rect key={i} x={30 + i * 16.6} y={y - h} width="6" height={h} rx="1.5" fill={cols[(i + r) % cols.length]} opacity="0.92" />;
+            })}
+          </g>
+        ))}
+        {[80, 160, 240].map((x, i) => (
+          <g key={i}>
+            <line x1={x} y1="0" x2={x} y2="13" stroke="#2a160c" strokeWidth="1" />
+            <circle cx={x} cy="15" r="9" fill="#ffd98a" opacity="0.22" />
+            <circle cx={x} cy="15" r="3.5" fill="#ffd98a" />
+          </g>
+        ))}
+        <rect x="0" y="100" width="320" height="20" fill="#241208" />
+        <rect x="0" y="100" width="320" height="3" fill="#5c3a20" opacity="0.7" />
+        {[120, 210].map((x, i) => (
+          <path key={i} d={`M${x - 5} 92 L${x + 5} 92 L${x + 3} 100 L${x - 3} 100 Z`} fill="#c1272d" opacity="0.8" />
+        ))}
+      </svg>
+    );
+  };
+
+  // Venue logo lockup placeholder (drop in the locale's real logo here).
+  const Crest = ({ size = 40, color = '#f4ead8' }) => (
+    <svg viewBox="0 0 64 64" width={size} height={size} style={{ display: 'block' }} aria-label="Logo del locale">
+      <circle cx="32" cy="32" r="30" fill="none" stroke={color} strokeWidth="1.5" opacity="0.9" />
+      <circle cx="32" cy="32" r="25" fill="none" stroke={color} strokeWidth="0.6" opacity="0.5" />
+      <text x="32" y="37" textAnchor="middle" fontFamily="Playfair Display, serif" fontStyle="italic" fontWeight="700" fontSize="21" fill={color}>BB</text>
+      <text x="32" y="14" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="5" letterSpacing="1.5" fill={color} opacity="0.85">BAR BASSO</text>
+      <text x="32" y="54" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="4.3" letterSpacing="1.2" fill={color} opacity="0.8">MILANO · 1947</text>
+      <circle cx="13.5" cy="32" r="1" fill={color} /><circle cx="50.5" cy="32" r="1" fill={color} />
+    </svg>
+  );
+
+  return (
+    <div style={{ width: '100%', height: '100%', background: '#f4ead8', fontFamily: '"DM Sans", "Inter", sans-serif', color: '#3a1f10', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(193,39,45,0.04) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(232,163,58,0.06) 0%, transparent 40%)', pointerEvents: 'none' }} />
+
+      {/* Top bar */}
+      <div style={{ display: 'flex', alignItems: 'center', padding: '14px 32px', borderBottom: '1.5px dashed rgba(58,31,16,0.2)', position: 'relative', zIndex: 1, gap: 16 }}>
+        <button onClick={() => onNav && onNav('before-after')} style={{ width: 32, height: 32, borderRadius: '50%', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.2)', color: '#3a1f10', fontSize: 14, cursor: 'pointer' }}>←</button>
+        <div>
+          <div style={{ fontSize: 10, letterSpacing: 1.5, color: '#8a4a1a', textTransform: 'uppercase' }}>Bar Basso · Menu Estate 2026</div>
+          <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 20, fontWeight: 500, letterSpacing: -0.3 }}>Anteprima · pronto da pubblicare</div>
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', background: 'rgba(34,150,90,0.1)', border: '1px solid rgba(34,150,90,0.25)', borderRadius: 20, fontSize: 11, color: '#22965a' }}>
+            <span>✓</span>
+            <span style={{ fontFamily: '"Caveat", cursive', fontSize: 15 }}>controlli marca superati</span>
+          </div>
+          <button style={{ padding: '8px 14px', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.25)', borderRadius: 20, color: '#3a1f10', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>PDF</button>
+          <button style={{ padding: '8px 14px', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.25)', borderRadius: 20, color: '#3a1f10', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>Email al locale</button>
+          <button style={{ padding: '8px 22px', background: '#c1272d', border: 'none', borderRadius: 20, color: '#f4ead8', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600 }}>Pubblica QR live</button>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 320px', minHeight: 0, position: 'relative', zIndex: 1, gap: 0 }}>
+
+        {/* MENU CANVAS */}
+        <div style={{ background: 'rgba(58,31,16,0.05)', padding: '24px 28px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', gap: 16, overflow: 'hidden' }}>
+
+          {/* Page 1 — Cover (brand page) — now carries the venue logo + an
+              interior photo (Listen feedback 3 giu). The Campari wordmark stays
+              PRODUCT red; corporate GROUP blue lives on the cream publish panel. */}
+          <div style={{ width: 320, height: 'calc(100% - 8px)', background: '#c1272d', color: '#f4ead8', display: 'flex', flexDirection: 'column', boxShadow: '0 10px 40px rgba(58,31,16,0.18)', borderRadius: 4, overflow: 'hidden', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: 8, right: 8, zIndex: 3, fontSize: 8, letterSpacing: 1.5, textTransform: 'uppercase', opacity: 0.75, background: 'rgba(244,234,216,0.15)', padding: '2px 6px', borderRadius: 8 }}>🔒 pagina brand</div>
+
+            {/* venue logo lockup */}
+            <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 28 }}>
+              <Crest size={66} color="#f4ead8" />
+            </div>
+
+            <div style={{ flex: 1, padding: '18px 28px 0', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', textAlign: 'center' }}>
+              <div>
+                <div style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontWeight: 500, fontSize: 13, letterSpacing: 4, marginBottom: 6 }}>BAR BASSO</div>
+                <div style={{ width: 40, height: 1, background: 'rgba(244,234,216,0.5)', margin: '12px auto' }} />
+                <div style={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, fontSize: 40, fontStyle: 'italic', letterSpacing: -1, lineHeight: 0.95, marginTop: 14 }}>L'aperitivo</div>
+                <div style={{ fontFamily: '"Playfair Display", serif', fontWeight: 500, fontSize: 16, letterSpacing: 5, marginTop: 10 }}>— ITALIANO —</div>
+              </div>
+              <div style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontWeight: 700, fontSize: 38, lineHeight: 1, marginBottom: 10 }}>Campari</div>
+            </div>
+
+            {/* venue interior photo band */}
+            <div style={{ position: 'relative', height: 96, overflow: 'hidden', borderTop: '1px solid rgba(244,234,216,0.25)' }}>
+              <VenuePhoto />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(193,39,45,0.4) 0%, rgba(193,39,45,0) 35%)' }} />
+              <div style={{ position: 'absolute', left: 12, bottom: 8, fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', color: 'rgba(244,234,216,0.9)' }}>Via Plinio 39 · Milano</div>
+              <div style={{ position: 'absolute', right: 12, bottom: 8, fontSize: 8, letterSpacing: 3, opacity: 0.85 }}>DAL 1860</div>
+            </div>
+          </div>
+
+          {/* Page 2 — Classici */}
+          <div style={{ width: 320, height: 'calc(100% - 8px)', background: '#fff8eb', boxShadow: '0 10px 40px rgba(58,31,16,0.12)', borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ padding: '24px 24px 12px', textAlign: 'center', borderBottom: '1px solid rgba(193,39,45,0.2)' }}>
+              <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 11, fontWeight: 600, letterSpacing: 2.5, color: '#c1272d' }}>I CLASSICI</div>
+              <div style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontWeight: 500, fontSize: 28, letterSpacing: -0.4, lineHeight: 1, marginTop: 4 }}>Campari</div>
+            </div>
+            <div style={{ flex: 1, padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: 13, overflow: 'hidden' }}>
+              {classics.map((d, i) => (
+                <div key={i} style={{ position: 'relative' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                    {d.signature && <span style={{ color: '#e8a33a', marginRight: 2, fontSize: 12 }}>★</span>}
+                    <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 15, fontWeight: 600, letterSpacing: -0.2 }}>{d.n}</div>
+                    <div style={{ flex: 1, borderBottom: '1px dotted rgba(58,31,16,0.3)', transform: 'translateY(-3px)', margin: '0 4px' }} />
+                    <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 15, color: '#c1272d', fontWeight: 500 }}>€ {d.p}</div>
+                  </div>
+                  <div style={{ fontSize: 10, color: '#8a4a1a', marginTop: 1 }}>{d.ing}</div>
+                  <div style={{ fontSize: 10, fontStyle: 'italic', color: '#5c2818', marginTop: 1, opacity: 0.75 }}>{d.note}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ padding: '8px 24px 14px', textAlign: 'center', fontSize: 8, color: '#8a4a1a', letterSpacing: 2, textTransform: 'uppercase' }}>· pagina 2 ·</div>
+          </div>
+
+          {/* Page 3 — Casa */}
+          <div style={{ width: 320, height: 'calc(100% - 8px)', background: '#fff8eb', boxShadow: '0 10px 40px rgba(58,31,16,0.12)', borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ padding: '24px 24px 12px', textAlign: 'center', borderBottom: '1px solid rgba(58,31,16,0.15)' }}>
+              <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 11, fontWeight: 600, letterSpacing: 2.5, color: '#3a1f10' }}>LA CASA</div>
+              <div style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontWeight: 500, fontSize: 28, letterSpacing: -0.4, lineHeight: 1, marginTop: 4 }}>Cocktails</div>
+            </div>
+            <div style={{ flex: 1, padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: 11, overflow: 'hidden' }}>
+              {bar.map((d, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                  <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 15, fontWeight: 500 }}>{d[0]}</div>
+                  <div style={{ flex: 1, borderBottom: '1px dotted rgba(58,31,16,0.3)', transform: 'translateY(-3px)', margin: '0 4px' }} />
+                  <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 15, color: '#8a4a1a', fontWeight: 500 }}>€ {d[1]}</div>
+                </div>
+              ))}
+              <div style={{ marginTop: 12, paddingTop: 14, borderTop: '1px dashed rgba(58,31,16,0.2)' }}>
+                <div style={{ fontFamily: '"Caveat", cursive', fontSize: 18, color: '#c1272d', textAlign: 'center', lineHeight: 1.2 }}>"Tutto bene quel che finisce con un Negroni Sbagliato."</div>
+                <div style={{ fontSize: 9, textAlign: 'center', color: '#8a4a1a', marginTop: 4, letterSpacing: 1.5 }}>— MIRKO STOCCHETTO, 1972</div>
+              </div>
+            </div>
+            <div style={{ padding: '8px 24px 14px', textAlign: 'center', fontSize: 8, color: '#8a4a1a', letterSpacing: 2, textTransform: 'uppercase' }}>· pagina 3 ·</div>
+          </div>
+        </div>
+
+        {/* RIGHT — publish panel */}
+        <div style={{ borderLeft: '1.5px dashed rgba(58,31,16,0.15)', background: '#f4ead8', padding: '24px 24px', display: 'flex', flexDirection: 'column', gap: 18, overflow: 'hidden' }}>
+          <div>
+            <div style={{ fontSize: 10, letterSpacing: 1.5, color: '#8a4a1a', textTransform: 'uppercase', fontWeight: 600 }}>Codice QR del menu</div>
+            <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 18, fontWeight: 600, marginTop: 2 }}>I clienti scansioneranno questo</div>
+          </div>
+
+          {/* QR card */}
+          <div style={{ background: '#fff8eb', borderRadius: 18, padding: 22, textAlign: 'center', border: '1px solid rgba(58,31,16,0.1)', boxShadow: '0 2px 8px rgba(58,31,16,0.05)' }}>
+            <div style={{ width: 150, height: 150, margin: '0 auto', background: '#3a1f10', borderRadius: 10, padding: 8, position: 'relative' }}>
+              <svg viewBox="0 0 100 100" width="100%" height="100%" style={{ background: '#f4ead8', borderRadius: 4 }}>
+                {/* fake QR pattern */}
+                {Array.from({ length: 11 }).map((_, r) => Array.from({ length: 11 }).map((_, c) => {
+                  const seed = (r * 7 + c * 13 + r * c) % 5;
+                  return seed < 2 ? <rect key={`${r}-${c}`} x={5 + c * 8} y={5 + r * 8} width="7" height="7" fill="#3a1f10" /> : null;
+                }))}
+                {/* finder squares */}
+                {[[5, 5], [69, 5], [5, 69]].map(([x, y], i) => (
+                  <g key={i}>
+                    <rect x={x} y={y} width="22" height="22" fill="#3a1f10" />
+                    <rect x={x + 3} y={y + 3} width="16" height="16" fill="#f4ead8" />
+                    <rect x={x + 7} y={y + 7} width="8" height="8" fill="#3a1f10" />
+                  </g>
+                ))}
+                {/* center brand */}
+                <circle cx="50" cy="50" r="9" fill="#f4ead8" />
+                <circle cx="50" cy="50" r="7" fill="#c1272d" />
+                <text x="50" y="54" fontSize="6" fontFamily="Playfair Display, serif" fontStyle="italic" fontWeight="700" fill="#f4ead8" textAnchor="middle">C</text>
+              </svg>
+            </div>
+            <div style={{ marginTop: 14, fontFamily: '"Playfair Display", serif', fontSize: 14, fontWeight: 600 }}>bar-basso.dltm.it</div>
+            <div style={{ fontSize: 10, color: '#8a4a1a', marginTop: 2 }}>aggiornamenti live · senza ristampa</div>
+          </div>
+
+          {/* publish summary */}
+          <div style={{ fontSize: 11, lineHeight: 1.5, color: '#3a1f10' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px dashed rgba(58,31,16,0.12)' }}>
+              <span style={{ color: '#8a4a1a' }}>Pagine</span><span style={{ fontWeight: 600 }}>4</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px dashed rgba(58,31,16,0.12)' }}>
+              <span style={{ color: '#8a4a1a' }}>Drink totali</span><span style={{ fontWeight: 600 }}>13</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px dashed rgba(58,31,16,0.12)' }}>
+              <span style={{ color: '#8a4a1a' }}>Campari in evidenza</span><span style={{ fontWeight: 600, color: '#c1272d' }}>6</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px dashed rgba(58,31,16,0.12)' }}>
+              <span style={{ color: '#8a4a1a' }}>Pubblicazione</span><span style={{ fontWeight: 600 }}>oggi 14:42</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
+              <span style={{ color: '#8a4a1a' }}>Valido fino al</span><span style={{ fontWeight: 600 }}>30 settembre</span>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <button onClick={() => onNav && onNav('published')} style={{ padding: '12px', background: '#c1272d', border: 'none', borderRadius: 22, color: '#f4ead8', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600 }}>Pubblica e invia QR al locale</button>
+            <div style={{ fontFamily: '"Caveat", cursive', fontSize: 15, color: '#8a4a1a', textAlign: 'center' }}>— il barista riceverà tutto via email —</div>
+            {/* Campari GROUP — corporate platform lockup (blue + Inter) */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, paddingTop: 6, marginTop: 2, borderTop: '1px dashed rgba(58,31,16,0.12)' }}>
+              <div style={{ width: 16, height: 16, borderRadius: '50%', background: GROUP, color: '#f4ead8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontWeight: 700, fontSize: 9 }}>D</div>
+              <span style={{ fontFamily: '"Inter", sans-serif', fontSize: 8.5, letterSpacing: 1.5, textTransform: 'uppercase', color: GROUP, fontWeight: 700 }}>Piattaforma Campari Group</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.WarmFinalMenu = WarmFinalMenu;

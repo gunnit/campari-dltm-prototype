@@ -1,0 +1,213 @@
+// Warm Italian — Screen 02: Before / After comparison
+// Shows the original scanned menu on the left, the new DLTM menu on the right
+// with Campari classics pinned on top. Center "diff" column summarizes changes.
+
+function WarmBeforeAfter({ onNav }) {
+  const original = [
+    { name: "Mojito", price: "9" },
+    { name: "Gin Tonic", price: "8" },
+    { name: "Moscow Mule", price: "9" },
+    { name: "Margarita", price: "9" },
+    { name: "Old Fashioned", price: "11" },
+    { name: "Manhattan", price: "10" },
+    { name: "Cosmopolitan", price: "9" },
+    { name: "Whisky Sour", price: "10" },
+    { name: "Espresso Martini", price: "10" },
+    { name: "Caipirinha", price: "9" },
+    { name: "Bloody Mary", price: "9" },
+    { name: "Negroni Sbagliato", price: "10", note: "★ specialità" },
+  ];
+
+  const campari = [
+    { name: "Negroni", price: "12", ing: "Campari · Gin · Vermouth Rosso" },
+    { name: "Americano", price: "11", ing: "Campari · Vermouth Rosso · Soda" },
+    { name: "Spritz Campari", price: "10", ing: "Campari · Prosecco · Soda" },
+    { name: "Garibaldi", price: "11", ing: "Campari · Succo d'arancia" },
+    { name: "Boulevardier", price: "13", ing: "Campari · Whisky · Vermouth" },
+    { name: "Negroni Sbagliato", price: "11", ing: "Campari · Vermouth · Spumante", signature: true },
+  ];
+
+  const kept = ["Mojito", "Gin Tonic", "Moscow Mule", "Margarita", "Old Fashioned", "Manhattan", "Espresso Martini"];
+
+  const Squig = ({ color = '#c1272d', w = 80 }) => (
+    <svg width={w} height="8" viewBox="0 0 80 8" style={{ display: 'block' }}>
+      <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4 T 70 4 T 80 4" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+
+  // Venue logo lockup placeholder (drop in the locale's real logo here) — Listen 3 giu
+  const Crest = ({ size = 40, color = '#f4ead8' }) => (
+    <svg viewBox="0 0 64 64" width={size} height={size} style={{ display: 'block' }} aria-label="Logo del locale">
+      <circle cx="32" cy="32" r="30" fill="none" stroke={color} strokeWidth="1.5" opacity="0.9" />
+      <circle cx="32" cy="32" r="25" fill="none" stroke={color} strokeWidth="0.6" opacity="0.5" />
+      <text x="32" y="37" textAnchor="middle" fontFamily="Playfair Display, serif" fontStyle="italic" fontWeight="700" fontSize="21" fill={color}>BB</text>
+      <text x="32" y="14" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="5" letterSpacing="1.5" fill={color} opacity="0.85">BAR BASSO</text>
+      <text x="32" y="54" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="4.3" letterSpacing="1.2" fill={color} opacity="0.8">MILANO · 1947</text>
+      <circle cx="13.5" cy="32" r="1" fill={color} /><circle cx="50.5" cy="32" r="1" fill={color} />
+    </svg>
+  );
+
+  return (
+    <div style={{ width: '100%', height: '100%', background: '#f4ead8', fontFamily: '"DM Sans", "Inter", sans-serif', color: '#3a1f10', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(193,39,45,0.04) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(232,163,58,0.06) 0%, transparent 40%)', pointerEvents: 'none' }} />
+
+      {/* Top bar — context + actions */}
+      <div style={{ display: 'flex', alignItems: 'center', padding: '16px 32px', borderBottom: '1.5px dashed rgba(58,31,16,0.2)', position: 'relative', zIndex: 1, background: '#f4ead8' }}>
+        <button onClick={() => onNav && onNav('playground')} style={{ width: 36, height: 36, borderRadius: '50%', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.2)', color: '#3a1f10', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
+        <div style={{ marginLeft: 16 }}>
+          <div style={{ fontSize: 11, letterSpacing: 1.5, color: '#8a4a1a', textTransform: 'uppercase' }}>Bar Basso · Milano</div>
+          <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 22, fontWeight: 500, lineHeight: 1.1, letterSpacing: -0.3 }}>Confronto menu <span style={{ fontStyle: 'italic', color: '#8a4a1a', fontSize: 18 }}>· revisione AI</span></div>
+        </div>
+        <div style={{ marginLeft: 28, display: 'flex', alignItems: 'center', gap: 10, padding: '6px 14px', background: 'rgba(193,39,45,0.08)', borderRadius: 20, border: '1px solid rgba(193,39,45,0.2)' }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#c1272d', boxShadow: '0 0 0 3px rgba(193,39,45,0.2)' }} />
+          <span style={{ fontFamily: '"Caveat", cursive', fontSize: 17, color: '#c1272d' }}>AI ha proposto 6 modifiche</span>
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 10 }}>
+          <button style={{ padding: '10px 16px', background: 'transparent', border: '1.5px solid rgba(58,31,16,0.25)', borderRadius: 22, color: '#3a1f10', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Rifiuta tutto</button>
+          <button onClick={() => onNav && onNav('playground')} style={{ padding: '10px 18px', background: '#3a1f10', border: 'none', borderRadius: 22, color: '#f4ead8', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500 }}>Modifica nel Playground</button>
+          <button onClick={() => onNav && onNav('final')} style={{ padding: '10px 22px', background: '#c1272d', border: 'none', borderRadius: 22, color: '#f4ead8', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>✓</span> Applica tutto
+          </button>
+        </div>
+      </div>
+
+      {/* Triple column layout */}
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 240px 1fr', gap: 0, padding: '24px 32px', minHeight: 0, position: 'relative', zIndex: 1, overflow: 'hidden' }}>
+
+        {/* LEFT — PRIMA */}
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: 0, paddingRight: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ fontSize: 10, letterSpacing: 2, color: '#8a4a1a', textTransform: 'uppercase', fontWeight: 600 }}>Prima</div>
+            <Squig color="#8a4a1a" w={36} />
+            <div style={{ fontFamily: '"Caveat", cursive', fontSize: 17, color: '#8a4a1a' }}>menu originale scansionato</div>
+          </div>
+          <div style={{ flex: 1, background: '#faf3e3', border: '1px solid rgba(58,31,16,0.15)', borderRadius: 6, padding: '24px 28px', position: 'relative', overflow: 'hidden', boxShadow: 'inset 0 0 60px rgba(58,31,16,0.04)', transform: 'rotate(-0.3deg)' }}>
+            {/* paper-stained corners */}
+            <div style={{ position: 'absolute', top: 0, right: 0, width: 50, height: 50, background: 'radial-gradient(circle at top right, rgba(232,163,58,0.18), transparent 70%)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', bottom: 0, left: 0, width: 60, height: 60, background: 'radial-gradient(circle at bottom left, rgba(58,31,16,0.08), transparent 70%)', pointerEvents: 'none' }} />
+
+            <div style={{ textAlign: 'center', marginBottom: 16 }}>
+              <div style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 22, fontWeight: 700, letterSpacing: 2, color: '#3a1f10' }}>BAR BASSO</div>
+              <div style={{ fontSize: 10, color: '#8a4a1a', letterSpacing: 3, marginTop: 2 }}>— LISTINO COCKTAILS —</div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              {original.map((d, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 8, fontFamily: 'Georgia, serif', fontSize: 14, color: '#3a1f10', opacity: d.note ? 1 : 0.85 }}>
+                  <span style={{ fontWeight: d.note ? 600 : 400 }}>{d.name}</span>
+                  {d.note && <span style={{ fontSize: 10, color: '#8a4a1a', fontStyle: 'italic' }}>{d.note}</span>}
+                  <span style={{ flex: 1, borderBottom: '1px dotted rgba(58,31,16,0.3)', margin: '0 4px', transform: 'translateY(-3px)' }} />
+                  <span style={{ fontVariantNumeric: 'tabular-nums' }}>€ {d.price}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 18, paddingTop: 12, borderTop: '1px solid rgba(58,31,16,0.15)', fontSize: 10, color: '#8a4a1a', textAlign: 'center', fontStyle: 'italic' }}>Via Plinio 39, Milano · 1947</div>
+
+            {/* corner sticker */}
+            <div style={{ position: 'absolute', top: 12, right: 12, fontSize: 9, color: '#8a4a1a', background: 'rgba(58,31,16,0.06)', padding: '3px 7px', borderRadius: 3, letterSpacing: 1, textTransform: 'uppercase' }}>OCR · 96%</div>
+          </div>
+          <div style={{ marginTop: 8, display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#8a4a1a' }}>
+            <span>12 drink rilevati · 1 specialità</span>
+            <span>Estratto 14:23</span>
+          </div>
+        </div>
+
+        {/* MIDDLE — DIFF */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 8px', minHeight: 0 }}>
+          <div style={{ fontSize: 10, letterSpacing: 2, color: '#8a4a1a', textTransform: 'uppercase', fontWeight: 600, marginBottom: 10 }}>Modifiche</div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: 10, width: '100%', overflow: 'hidden' }}>
+            {[
+              { sym: '+', color: '#c1272d', title: 'Negroni', sub: 'aggiunto · classico Campari' },
+              { sym: '+', color: '#c1272d', title: 'Americano', sub: 'aggiunto · classico Campari' },
+              { sym: '+', color: '#c1272d', title: 'Spritz Campari', sub: 'aggiunto · estate' },
+              { sym: '+', color: '#c1272d', title: 'Garibaldi', sub: 'aggiunto · brunch' },
+              { sym: '+', color: '#c1272d', title: 'Boulevardier', sub: 'aggiunto · serale' },
+              { sym: '★', color: '#e8a33a', title: 'Negroni Sbagliato', sub: 'promosso a firma' },
+              { sym: '−', color: '#8a4a1a', title: 'Cosmopolitan', sub: 'rimosso · stagione' },
+              { sym: '↻', color: '#8a4a1a', title: 'Bloody Mary', sub: 'spostato a brunch' },
+            ].map((c, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '8px 10px', background: i < 6 ? 'rgba(255,248,235,0.7)' : 'transparent', borderRadius: 10, border: '1px dashed rgba(58,31,16,0.12)' }}>
+                <div style={{ width: 22, height: 22, borderRadius: '50%', background: c.color, color: '#f4ead8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, flexShrink: 0, fontFamily: c.sym === '★' ? 'inherit' : '"Playfair Display", serif' }}>{c.sym}</div>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, lineHeight: 1.2 }}>{c.title}</div>
+                  <div style={{ fontSize: 10, color: '#8a4a1a', marginTop: 1, lineHeight: 1.2 }}>{c.sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 10, padding: '10px 14px', background: '#3a1f10', color: '#f4ead8', borderRadius: 14, width: '100%', textAlign: 'center' }}>
+            <div style={{ fontSize: 10, opacity: 0.6, letterSpacing: 1, textTransform: 'uppercase' }}>Bilancio</div>
+            <div style={{ fontFamily: '"Caveat", cursive', fontSize: 18, marginTop: 2 }}>+5 nuovi · 1 promosso</div>
+          </div>
+        </div>
+
+        {/* RIGHT — DOPO */}
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: 0, paddingLeft: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ fontSize: 10, letterSpacing: 2, color: '#c1272d', textTransform: 'uppercase', fontWeight: 700 }}>Dopo</div>
+            <Squig color="#c1272d" w={36} />
+            <div style={{ fontFamily: '"Caveat", cursive', fontSize: 17, color: '#c1272d' }}>menu Campari · generato dall'AI</div>
+          </div>
+          <div style={{ flex: 1, background: '#fff8eb', border: '1px solid rgba(58,31,16,0.15)', borderRadius: 6, padding: 0, position: 'relative', overflow: 'hidden', boxShadow: '0 4px 18px rgba(58,31,16,0.08)', display: 'flex', flexDirection: 'column' }}>
+            {/* Campari hero strip */}
+            <div style={{ background: '#c1272d', color: '#f4ead8', padding: '12px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <Crest size={40} color="#f4ead8" />
+                <div>
+                  <div style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontWeight: 700, fontSize: 18, letterSpacing: -0.3 }}>Bar Basso</div>
+                  <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.85 }}>L'aperitivo italiano · dal 1947</div>
+                </div>
+              </div>
+              <div style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontSize: 22, fontWeight: 500 }}>Campari</div>
+            </div>
+
+            {/* Featured Campari classics */}
+            <div style={{ padding: '14px 22px 10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#c1272d' }} />
+                <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 14, fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase' }}>I Classici</div>
+                <div style={{ flex: 1, borderBottom: '1px solid rgba(193,39,45,0.3)' }} />
+                <div style={{ fontSize: 9, color: '#c1272d', fontFamily: '"Caveat", cursive', fontSize: 14 }}>nuovi</div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                {campari.map((d, i) => (
+                  <div key={i} style={{ position: 'relative', padding: '5px 8px 5px 14px', background: d.signature ? 'rgba(232,163,58,0.18)' : 'rgba(193,39,45,0.05)', borderRadius: 4, borderLeft: `3px solid ${d.signature ? '#e8a33a' : '#c1272d'}` }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                      <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 14, fontWeight: 600, color: '#3a1f10' }}>{d.name}</div>
+                      {d.signature && <div style={{ fontSize: 8, color: '#8a4a1a', background: '#e8a33a', padding: '1px 6px', borderRadius: 8, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600 }}>firma</div>}
+                      <div style={{ flex: 1, borderBottom: '1px dotted rgba(58,31,16,0.25)', transform: 'translateY(-3px)' }} />
+                      <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 14, fontWeight: 500, color: '#c1272d', fontVariantNumeric: 'tabular-nums' }}>€ {d.price}</div>
+                    </div>
+                    <div style={{ fontSize: 9.5, color: '#8a4a1a', marginTop: 1, lineHeight: 1.2 }}>{d.ing}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bar standards section */}
+            <div style={{ padding: '4px 22px 18px', borderTop: '1px dashed rgba(58,31,16,0.15)', marginTop: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '10px 0 8px' }}>
+                <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 12, fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', color: '#3a1f10' }}>Cocktails</div>
+                <div style={{ flex: 1, borderBottom: '1px solid rgba(58,31,16,0.2)' }} />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 16px' }}>
+                {original.filter(d => kept.includes(d.name)).map((d, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 6, fontFamily: '"DM Sans", sans-serif', fontSize: 12, color: '#3a1f10' }}>
+                    <span>{d.name}</span>
+                    <span style={{ flex: 1, borderBottom: '1px dotted rgba(58,31,16,0.2)', transform: 'translateY(-3px)' }} />
+                    <span style={{ fontVariantNumeric: 'tabular-nums', color: '#8a4a1a' }}>€ {d.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div style={{ marginTop: 8, display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#8a4a1a' }}>
+            <span>13 drink · 6 Campari in evidenza</span>
+            <span style={{ fontFamily: '"Caveat", cursive', fontSize: 14, color: '#c1272d' }}>pronto da pubblicare ✨</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.WarmBeforeAfter = WarmBeforeAfter;

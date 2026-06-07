@@ -1,0 +1,144 @@
+// Direction 3 — Warm Italian / terracotta cream / hand-drawn accents
+
+function WarmDashboard({ onNav }) {
+  // Brand system (Listen feedback 3 giu): Campari GROUP = corporate blue + Inter;
+  // Campari PRODUCT = aperitivo red + Playfair. Group owns the platform chrome.
+  const GROUP = '#16357a';
+  const pdvs = [
+    { name: "Bar Basso", city: "Milano", area: "Brera", menus: 3, last: "ieri", swatch: ['#c1272d', '#e8a33a'] },
+    { name: "Camparino", city: "Milano", area: "Duomo", menus: 2, last: "2 giorni", swatch: ['#7a0e14', '#c1272d'] },
+    { name: "Terrazza", city: "Venezia", area: "San Marco", menus: 1, last: "5 giorni", swatch: ['#e8a33a', '#d4b896'] },
+    { name: "Hotel Locarno", city: "Roma", area: "P. del Popolo", menus: 4, last: "oggi", swatch: ['#2a1810', '#5c2818'] },
+    { name: "Bar Luce", city: "Milano", area: "Prada", menus: 2, last: "3 giorni", swatch: ['#d4b896', '#8a6a3a'] },
+    { name: "Florian", city: "Venezia", area: "S. Marco", menus: 1, last: "1 sett.", swatch: ['#5c2818', '#c1272d'] },
+  ];
+
+  const Squiggle = ({ color = '#c1272d', w = 80 }) => (
+    <svg width={w} height="8" viewBox="0 0 80 8" style={{ display: 'block' }}>
+      <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4 T 70 4 T 80 4" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+
+  return (
+    <div style={{ width: '100%', height: '100%', background: '#f4ead8', fontFamily: '"DM Sans", "Inter", sans-serif', color: '#3a1f10', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+      {/* Decorative paper texture overlay */}
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(193,39,45,0.04) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(232,163,58,0.06) 0%, transparent 40%)', pointerEvents: 'none' }} />
+
+      {/* Top nav */}
+      <div style={{ display: 'flex', alignItems: 'center', padding: '20px 40px', borderBottom: '1.5px dashed rgba(58,31,16,0.2)', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 40, height: 40, background: GROUP, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f4ead8', fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontWeight: 700, fontSize: 22 }}>D</div>
+          <div>
+            <div style={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, fontSize: 18, letterSpacing: -0.3 }}>Drink List</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 10, letterSpacing: 1.5, color: '#8a4a1a', textTransform: 'uppercase' }}>Tailor Made</span>
+              <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(58,31,16,0.3)' }} />
+              <span style={{ fontFamily: '"Inter", sans-serif', fontSize: 9, fontWeight: 700, letterSpacing: 1.5, color: GROUP, textTransform: 'uppercase' }}>Campari Group</span>
+            </div>
+          </div>
+        </div>
+        <nav style={{ display: 'flex', gap: 28, marginLeft: 56, fontSize: 13.5, color: '#5c2818' }}>
+          {['Locali', 'Menu', 'Catalogo', 'QR Code', 'Storico'].map((n, i) => (
+            <div key={n} style={{ position: 'relative', cursor: 'pointer', fontWeight: i === 0 ? 600 : 400 }}>
+              {n}
+              {i === 0 && <div style={{ position: 'absolute', bottom: -6, left: 0, right: 0 }}><Squiggle w={Math.max(40, n.length * 8)} /></div>}
+            </div>
+          ))}
+        </nav>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', background: '#fff8eb', border: '1.5px solid rgba(58,31,16,0.15)', borderRadius: 22, fontSize: 13 }}>
+            <span style={{ color: '#8a4a1a' }}>⌕</span>
+            <input placeholder="cerca un locale…" style={{ background: 'transparent', border: 'none', outline: 'none', color: '#3a1f10', fontFamily: 'inherit', width: 160 }} />
+          </div>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#c1272d,#7a0e14)', color: '#f4ead8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: 13 }}>MR</div>
+        </div>
+      </div>
+
+      {/* Hero greeting */}
+      <div style={{ padding: '32px 40px 20px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', position: 'relative', zIndex: 1 }}>
+        <div>
+          <div style={{ fontSize: 13, color: '#8a4a1a', marginBottom: 6, fontFamily: '"Caveat", "Kalam", cursive', fontSize: 22 }}>Buongiorno Marco —</div>
+          <div style={{ fontFamily: '"Playfair Display", "Cormorant Garamond", serif', fontSize: 52, fontWeight: 500, lineHeight: 1, letterSpacing: -1 }}>
+            è ora di un buon <span style={{ fontStyle: 'italic', color: '#c1272d' }}>menu</span>.
+          </div>
+          <div style={{ marginTop: 10 }}><Squiggle color="#e8a33a" w={140} /></div>
+        </div>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button style={{ padding: '12px 20px', background: 'transparent', border: '1.5px solid #3a1f10', borderRadius: 26, color: '#3a1f10', fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>Scansiona menu</button>
+          <button onClick={() => onNav && onNav('playground')} style={{ padding: '12px 22px', background: '#c1272d', border: '1.5px solid #c1272d', borderRadius: 26, color: '#f4ead8', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 15 }}>+</span>
+            Crea nuovo menu
+          </button>
+        </div>
+      </div>
+
+      {/* Activity strip */}
+      <div style={{ padding: '0 40px 24px', display: 'flex', gap: 14, position: 'relative', zIndex: 1 }}>
+        {[
+          { l: 'Locali', n: '14', sub: 'Nord Italia', bg: '#c1272d', fg: '#f4ead8' },
+          { l: 'Menu attivi', n: '23', sub: '+5 questa sett.', bg: '#fff8eb', fg: '#3a1f10' },
+          { l: 'Scan QR', n: '1.847', sub: 'aprile · ↑ 18%', bg: '#fff8eb', fg: '#3a1f10' },
+          { l: 'In bozza', n: '4', sub: 'da completare', bg: '#e8a33a', fg: '#3a1f10' },
+        ].map((s, i) => (
+          <div key={i} style={{ flex: 1, background: s.bg, borderRadius: 18, padding: '18px 20px', color: s.fg, position: 'relative', overflow: 'hidden' }}>
+            <div style={{ fontSize: 11, opacity: 0.75, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>{s.l}</div>
+            <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 36, fontWeight: 500, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{s.n}</div>
+            <div style={{ fontSize: 11, opacity: 0.7, marginTop: 6 }}>{s.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* PDV cards */}
+      <div style={{ flex: 1, padding: '0 40px 24px', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+            <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 26, fontWeight: 500, letterSpacing: -0.4 }}>I tuoi locali</div>
+            <div style={{ fontSize: 13, color: '#8a4a1a', fontFamily: '"Caveat", cursive', fontSize: 18 }}>— sei di servizio in 14</div>
+          </div>
+          <div style={{ display: 'flex', gap: 4, fontSize: 12 }}>
+            {['Tutti', 'Recenti', 'In bozza'].map((t, i) => (
+              <button key={t} style={{ padding: '6px 14px', background: i === 0 ? '#3a1f10' : 'transparent', color: i === 0 ? '#f4ead8' : '#5c2818', border: i === 0 ? 'none' : '1px solid rgba(58,31,16,0.2)', borderRadius: 16, cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, whiteSpace: 'nowrap' }}>{t}</button>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, flex: 1, minHeight: 0 }}>
+          {pdvs.map((p, i) => (
+            <div key={i} onClick={() => onNav && onNav('playground')} style={{ background: '#fff8eb', borderRadius: 22, padding: 18, display: 'flex', flexDirection: 'column', gap: 10, boxShadow: '0 1px 0 rgba(58,31,16,0.06), 0 4px 16px rgba(58,31,16,0.05)', position: 'relative', cursor: 'pointer', border: '1px solid rgba(58,31,16,0.08)', transition: 'transform .15s, box-shadow .15s' }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 1px 0 rgba(58,31,16,0.06), 0 8px 22px rgba(58,31,16,0.1)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 1px 0 rgba(58,31,16,0.06), 0 4px 16px rgba(58,31,16,0.05)'; }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', gap: 4 }}>
+                  {p.swatch.map((c, j) => (
+                    <div key={j} style={{ width: 20, height: 20, borderRadius: '50%', background: c, border: '2px solid #fff8eb', marginLeft: j > 0 ? -8 : 0 }} />
+                  ))}
+                </div>
+                <div style={{ fontSize: 10.5, color: '#8a4a1a', textTransform: 'uppercase', letterSpacing: 1, fontFamily: '"Caveat", cursive', fontSize: 14, textTransform: 'none' }}>{p.last}</div>
+              </div>
+              <div>
+                <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 22, fontWeight: 500, letterSpacing: -0.3, lineHeight: 1.1 }}>{p.name}</div>
+                <div style={{ fontSize: 12, color: '#8a4a1a', marginTop: 3 }}>{p.city} · {p.area}</div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 10, borderTop: '1px dashed rgba(58,31,16,0.15)' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
+                  <span style={{ fontFamily: '"Playfair Display", serif', fontSize: 22, fontWeight: 500, color: '#c1272d' }}>{p.menus}</span>
+                  <span style={{ fontSize: 11, color: '#8a4a1a' }}>menu attivi</span>
+                </div>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#3a1f10', color: '#f4ead8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>→</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* AI hint sticker */}
+      <div style={{ position: 'absolute', bottom: 24, right: 40, background: '#3a1f10', color: '#f4ead8', padding: '10px 18px', borderRadius: 22, display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, transform: 'rotate(-2deg)', boxShadow: '0 6px 20px rgba(58,31,16,0.25)', zIndex: 2 }}>
+        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#e8a33a' }} />
+        <span style={{ fontFamily: '"Caveat", cursive', fontSize: 16 }}>chiedi all'AI</span>
+        <kbd style={{ fontSize: 10, padding: '2px 6px', background: 'rgba(244,234,216,0.15)', borderRadius: 3, fontFamily: 'inherit' }}>⌘K</kbd>
+      </div>
+    </div>
+  );
+}
+
+window.WarmDashboard = WarmDashboard;
