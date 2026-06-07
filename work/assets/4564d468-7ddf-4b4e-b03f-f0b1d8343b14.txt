@@ -11,46 +11,15 @@ function WarmPlayground({ onNav }) {
     </svg>
   );
 
-  // Venue interior "photo" placeholder (drop in the locale's real photo here).
-  // useId keeps gradient ids unique — every screen is mounted at once.
-  const VenuePhoto = () => {
-    const uid = React.useId().replace(/:/g, '');
-    const cols = ['#c1272d', '#e8a33a', '#7a0e14', '#d4b896', '#8a6a3a', '#a8331f'];
-    return (
-      <svg viewBox="0 0 320 120" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style={{ display: 'block' }} aria-label="Interni del locale">
-        <defs>
-          <linearGradient id={`w-${uid}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3a1f12" /><stop offset="1" stopColor="#190d07" /></linearGradient>
-          <radialGradient id={`g-${uid}`} cx="0.5" cy="0.18" r="0.85"><stop offset="0" stopColor="#e8a33a" stopOpacity="0.5" /><stop offset="1" stopColor="#e8a33a" stopOpacity="0" /></radialGradient>
-        </defs>
-        <rect width="320" height="120" fill={`url(#w-${uid})`} />
-        <rect width="320" height="120" fill={`url(#g-${uid})`} />
-        {[34, 56, 78].map((y, r) => (
-          <g key={r}>
-            <rect x="24" y={y - 14} width="272" height="14" fill="#2a160c" opacity="0.5" />
-            <rect x="24" y={y} width="272" height="2" fill="#5c2818" />
-            {Array.from({ length: 16 }).map((_, i) => {
-              const h = 8 + ((i * 7 + r * 5) % 6);
-              return <rect key={i} x={30 + i * 16.6} y={y - h} width="6" height={h} rx="1.5" fill={cols[(i + r) % cols.length]} opacity="0.92" />;
-            })}
-          </g>
-        ))}
-        {[80, 160, 240].map((x, i) => (
-          <g key={i}>
-            <line x1={x} y1="0" x2={x} y2="13" stroke="#2a160c" strokeWidth="1" />
-            <circle cx={x} cy="15" r="9" fill="#ffd98a" opacity="0.22" />
-            <circle cx={x} cy="15" r="3.5" fill="#ffd98a" />
-          </g>
-        ))}
-        <rect x="0" y="100" width="320" height="20" fill="#241208" />
-        <rect x="0" y="100" width="320" height="3" fill="#5c3a20" opacity="0.7" />
-        {[120, 210].map((x, i) => (
-          <g key={i} opacity="0.9">
-            <path d={`M${x - 5} 92 L${x + 5} 92 L${x + 3} 100 L${x - 3} 100 Z`} fill="#c1272d" opacity="0.85" />
-          </g>
-        ))}
-      </svg>
-    );
-  };
+  // Venue photo — the real Bar Basso storefront (Wikimedia Commons, Jwslubbock,
+  // CC BY-SA 3.0), shared once via window.__BB_PHOTO. Swap in the locale's own
+  // photo here when available.
+  const VenuePhoto = () => (
+    <>
+      <img src={window.__BB_PHOTO} alt="Bar Basso, Milano" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 72%', display: 'block' }} />
+      <div style={{ position: 'absolute', right: 6, bottom: 3, zIndex: 4, fontSize: 6, color: 'rgba(255,255,255,0.65)', fontFamily: '"Inter", sans-serif', letterSpacing: 0.2, textShadow: '0 1px 2px rgba(0,0,0,0.7)' }}>© Jwslubbock · CC BY-SA 3.0</div>
+    </>
+  );
 
   // Venue logo lockup placeholder (drop in the locale's real logo here).
   const Crest = ({ size = 40, color = '#f4ead8' }) => (
@@ -203,7 +172,7 @@ function WarmPlayground({ onNav }) {
               <div style={{ position: 'relative', height: 84, overflow: 'hidden' }}>
                 <VenuePhoto />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(193,39,45,0) 30%, rgba(193,39,45,0.94) 100%)' }} />
-                <div style={{ position: 'absolute', left: 10, bottom: 6, fontSize: 7.5, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(244,234,216,0.85)' }}>Bar Basso · sala interna</div>
+                <div style={{ position: 'absolute', left: 10, bottom: 6, fontSize: 7.5, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(244,234,216,0.92)', textShadow: '0 1px 3px rgba(0,0,0,0.6)' }}>Bar Basso · Via Plinio 39</div>
                 <div style={{ position: 'absolute', right: 8, top: 8 }}><Crest size={32} color="#f4ead8" /></div>
               </div>
               <div style={{ padding: '8px 22px 20px', textAlign: 'center' }}>
